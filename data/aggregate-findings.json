@@ -1,0 +1,53 @@
+{
+  "project": {
+    "title": "Customer Churn Analysis",
+    "question": "Which customer cohorts show the highest observed churn in the IBM sample?",
+    "tools": [
+      "Python",
+      "pandas",
+      "SQLite"
+    ]
+  },
+  "source": {
+    "name": "IBM Telco Customer Churn sample",
+    "repository": "https://github.com/IBM/telco-customer-churn-on-icp4d",
+    "csv": "https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv",
+    "scope": "Public fictional sample data. Customer-level records are intentionally not redistributed in this repository."
+  },
+  "data_validation": [
+    "Validated required fields, unique customer IDs, duplicate rows, churn labels, contract categories, and tenure range.",
+    "Recomputed contract cohort rates with pandas and a separate SQLite GROUP BY query; the results reconciled."
+  ],
+  "findings": [
+    {
+      "cohort": "All sample customers",
+      "observed_churn_rate_percent": 26.54,
+      "detail": "1,869 of 7,043 records are labeled Churn = Yes."
+    },
+    {
+      "cohort": "Month-to-month contract",
+      "observed_churn_rate_percent": 42.71
+    },
+    {
+      "cohort": "One-year contract",
+      "observed_churn_rate_percent": 11.27
+    },
+    {
+      "cohort": "Two-year contract",
+      "observed_churn_rate_percent": 2.83
+    },
+    {
+      "cohort": "0–12 months of tenure",
+      "observed_churn_rate_percent": 47.44
+    }
+  ],
+  "interpretation": "These are descriptive observed associations in a fictional sample. They do not show that a contract type or tenure causes churn.",
+  "next_steps": [
+    "Investigate early-tenure onboarding and service experience with qualitative feedback and additional operational data.",
+    "Evaluate a retention offer with a randomized holdout before claiming incremental retention or financial impact."
+  ],
+  "limitations": [
+    "The IBM dataset is a fictional sample and does not represent an employer's customers or results.",
+    "No predictive model, intervention, revenue uplift, savings, or causal effect is claimed."
+  ]
+}
