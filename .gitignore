@@ -1,0 +1,10 @@
+# Public source data is downloaded locally for reproduction; do not commit it.
+data/*.csv
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.venv/
+
+# OS metadata
+.DS_Store
