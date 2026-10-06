@@ -1,0 +1,95 @@
+{
+  "project": "Customer Churn Analysis",
+  "source": "IBM Telco Customer Churn sample; fictional public data",
+  "filters": {
+    "contracts": [
+      "Month-to-month",
+      "One year",
+      "Two year"
+    ],
+    "tenure_cohorts": [
+      "0–12 months",
+      "13–24 months",
+      "25–48 months",
+      "49–72 months"
+    ]
+  },
+  "contract_tenure_cohorts": [
+    {
+      "contract": "Month-to-month",
+      "tenure_cohort": "0–12 months",
+      "customers": 1994,
+      "churned": 1024
+    },
+    {
+      "contract": "Month-to-month",
+      "tenure_cohort": "13–24 months",
+      "customers": 737,
+      "churned": 278
+    },
+    {
+      "contract": "Month-to-month",
+      "tenure_cohort": "25–48 months",
+      "customers": 802,
+      "churned": 264
+    },
+    {
+      "contract": "Month-to-month",
+      "tenure_cohort": "49–72 months",
+      "customers": 342,
+      "churned": 89
+    },
+    {
+      "contract": "One year",
+      "tenure_cohort": "0–12 months",
+      "customers": 124,
+      "churned": 13
+    },
+    {
+      "contract": "One year",
+      "tenure_cohort": "13–24 months",
+      "customers": 197,
+      "churned": 16
+    },
+    {
+      "contract": "One year",
+      "tenure_cohort": "25–48 months",
+      "customers": 518,
+      "churned": 55
+    },
+    {
+      "contract": "One year",
+      "tenure_cohort": "49–72 months",
+      "customers": 634,
+      "churned": 82
+    },
+    {
+      "contract": "Two year",
+      "tenure_cohort": "0–12 months",
+      "customers": 68,
+      "churned": 0
+    },
+    {
+      "contract": "Two year",
+      "tenure_cohort": "13–24 months",
+      "customers": 90,
+      "churned": 0
+    },
+    {
+      "contract": "Two year",
+      "tenure_cohort": "25–48 months",
+      "customers": 274,
+      "churned": 6
+    },
+    {
+      "contract": "Two year",
+      "tenure_cohort": "49–72 months",
+      "customers": 1263,
+      "churned": 42
+    }
+  ],
+  "notes": [
+    "Observed churn rate = customers labeled Churn = Yes ÷ customers in the selected aggregate cohort.",
+    "Descriptive associations in a fictional sample; neither causal effects nor revenue impact are claimed."
+  ]
+}
