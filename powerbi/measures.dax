@@ -1,0 +1,42 @@
+// Create this calculated column after importing the CSV into one table named
+// 'Telco Churn'. It matches the aggregate cohorts used in dashboard/data.json.
+Tenure Cohort =
+SWITCH(
+    TRUE(),
+    'Telco Churn'[tenure] <= 12, "0–12 months",
+    'Telco Churn'[tenure] <= 24, "13–24 months",
+    'Telco Churn'[tenure] <= 48, "25–48 months",
+    'Telco Churn'[tenure] <= 72, "49–72 months",
+    "Outside expected range"
+)
+
+// Measures. Format both rate measures as Percentage with two decimal places.
+Customers =
+DISTINCTCOUNT('Telco Churn'[customerID])
+
+Churned Customers =
+CALCULATE(
+    [Customers],
+    KEEPFILTERS('Telco Churn'[Churn] = "Yes")
+)
+
+Non-Churned Customers =
+[Customers] - [Churned Customers]
+
+Observed Churn Rate =
+DIVIDE([Churned Customers], [Customers])
+
+Early-Tenure Customers =
+CALCULATE(
+    [Customers],
+    KEEPFILTERS('Telco Churn'[Tenure Cohort] = "0–12 months")
+)
+
+Early-Tenure Churned Customers =
+CALCULATE(
+    [Churned Customers],
+    KEEPFILTERS('Telco Churn'[Tenure Cohort] = "0–12 months")
+)
+
+Early-Tenure Observed Churn Rate =
+DIVIDE([Early-Tenure Churned Customers], [Early-Tenure Customers])
