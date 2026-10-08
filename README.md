@@ -1,50 +1,67 @@
 # Customer Churn Analysis
 
-**Python · pandas · SQLite · Cohort analysis**
+[Open the live dashboard](https://poojasri234.github.io/customer-churn-analysis/)
 
-A concise, reproducible analysis of IBM's public Telco Customer Churn sample. The work answers one focused question: **which customer cohorts have the highest observed churn in this sample?**
+**Tools:** Python/pandas · SQL/SQLite · cohort analysis · interactive HTML dashboard · Power BI report specification and DAX measures
 
-The repository contains code and aggregate findings only. It does not redistribute customer-level data.
+A descriptive, reproducible cohort analysis of IBM's public Telco Customer Churn sample. The source is fictional and customer-level records are intentionally not redistributed in this repository.
 
-## Executive findings
+## Business question
 
-| Cohort | Observed churn rate |
-| --- | ---: |
-| All 7,043 sample customers | **26.54%** (1,869 labeled `Churn = Yes`) |
-| Month-to-month contract | **42.71%** |
-| One-year contract | **11.27%** |
-| Two-year contract | **2.83%** |
-| 0–12 months of tenure | **47.44%** |
+Which customer groups in the public IBM Telco sample show the highest observed churn, and where should a retention team investigate first?
 
-The findings identify cohorts worth investigating. They are **observed associations**, not proof that contract type or tenure causes churn.
+## Approach
 
-## What I did
+1. Validated required fields, unique customer IDs, duplicate rows, churn labels, contract categories, and the `0–72` month tenure range.
+2. Calculated `observed churn rate = customers labelled Churn = Yes ÷ customers in the selected group`.
+3. Recomputed contract and tenure rates in pandas and independently reconciled contract-level results with [SQLite queries](sql/churn_cohort_analysis.sql).
+4. Exported aggregate findings only for the dashboard and review; no customer-level records are committed.
 
-1. Validated required fields, unique customer IDs, duplicate rows, churn labels, contract categories, and tenure values.
-2. Calculated observed churn as customers labeled `Yes` divided by all customers in each cohort.
-3. Recomputed contract rates with pandas and an independent SQLite `GROUP BY` query to confirm the results reconcile.
-4. Exported only aggregate findings to JSON for review and portfolio use.
+## Findings
 
-## Repository layout
+- **26.54%** of the sample churned: **1,869 of 7,043** customers.
+- Month-to-month customers had **42.71%** observed churn (**1,655 of 3,875**), compared with **11.27%** for one-year and **2.83%** for two-year contracts.
+- Customers in their first **0–12 months** had **47.44%** observed churn (**1,037 of 2,186**).
+- The early-tenure/month-to-month group was the sharpest descriptive signal: **51.35%** observed churn (**1,024 of 1,994**). This is a prioritisation signal, not proof that a contract type or tenure causes churn.
 
-```text
-customer-churn-analysis/
-├── analysis/
-│   └── churn_analysis.py       # Reproducible analysis and validation
-├── data/
-│   ├── README.md               # Source and data-handling notes
-│   └── aggregate-findings.json # Aggregate output; no customer-level data
-├── requirements.txt
-└── README.md
-```
+## Recommendation
 
-## Reproduce the analysis
+Start with a controlled onboarding and plan-review experiment for newly acquired month-to-month customers. Randomly assign eligible customers to a new experience or standard treatment, then compare retention at an agreed horizon, offer cost per retained customer, complaints, and plan changes.
 
-Use Python 3.10 or later.
+Investigate service, billing, support-contact, and customer-value data before deciding whether a contract-upgrade offer is appropriate.
+
+## Potential business value — illustrative only
+
+If an intervention prevented **10% of the 1,024 observed churn events** in the comparable early-tenure/month-to-month group, that arithmetic scenario equals about **102 fewer churn events** and would move observed cohort churn from **51.35% to roughly 46.2%** (about **5.1 percentage points**).
+
+This is not a forecast or a claimed outcome. The sample has no offer exposure, causal evidence, customer value, margin, or time horizon, so it cannot support a monetary benefit estimate.
+
+## Limitations
+
+- IBM describes this as a fictional public sample; it does not represent an employer's customers or results.
+- This is a descriptive historical comparison, not a predictive model or deployed retention programme.
+- The observed differences may reflect customer mix, pricing, service experience, or variables not controlled here.
+- A randomized holdout and operational data are required before claiming incremental retention or financial impact.
+
+## SQL and dashboard evidence
+
+- [`sql/churn_cohort_analysis.sql`](sql/churn_cohort_analysis.sql) — input-quality checks plus overall, contract, tenure, and contract-by-tenure cohort queries.
+- [`analysis/churn_analysis.py`](analysis/churn_analysis.py) — reproducible validation and aggregate analysis.
+- [`powerbi/`](powerbi/) — DAX measures and report specification. A completed `.pbix` file is not included.
+- [`data/aggregate-findings.json`](data/aggregate-findings.json) — aggregate-only results.
+
+## 3-minute interview walkthrough
+
+- **0:00–0:25:** Frame this as a cohort-prioritisation question, not a predictive model.
+- **0:25–1:00:** Describe schema, ID, label, contract, tenure, and duplicate validation.
+- **1:00–1:40:** Explain the churn-rate formula and the month-to-month / early-tenure findings.
+- **1:40–2:15:** Show how SQLite independently reconciles the pandas cohort rates.
+- **2:15–2:45:** Recommend a randomized onboarding or plan-review test and explain the 102-event scenario is arithmetic only.
+- **2:45–3:00:** With production data, add service, billing, support, price, margin, and treatment-exposure history.
+
+## Reproduce
 
 ```bash
-git clone <your-fork-url>
-cd customer-churn-analysis
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -53,14 +70,4 @@ curl -L "https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/mas
 python analysis/churn_analysis.py --input data/Telco-Customer-Churn.csv
 ```
 
-The script writes `data/aggregate-findings.json`. The downloaded CSV is ignored by Git so the repository remains free of customer-level records.
-
-## Data source and scope
-
-The source is the public [IBM Telco Customer Churn sample](https://github.com/IBM/telco-customer-churn-on-icp4d). IBM describes the sample as fictional. It is used here to demonstrate data validation, cohort analysis, and clear communication of descriptive results.
-
-This is not a deployed retention program or a predictive model. No revenue, savings, churn reduction, or causal impact is claimed.
-
-## Interview-ready explanation
-
-> I validated the public IBM sample, then calculated churn rates by contract and early-tenure cohorts. I independently reconciled contract rates with a SQLite query. The analysis shows where churn is concentrated in the sample, but I would test any retention idea with a control group before claiming an impact.
+See [data/README.md](data/README.md) for source and handling notes.
